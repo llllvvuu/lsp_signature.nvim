@@ -96,7 +96,7 @@ function manager.init()
   manager.confirmedCompletion = false
 end
 
-local function virtual_hint(hint, off_y)
+local function virtual_hint(hint, off_y, config)
   if hint == nil or hint == '' then
     return
   end
@@ -112,7 +112,7 @@ local function virtual_hint(hint, off_y)
     show_at = cur_line + 1 -- same line
   end
   local pl
-  local completion_visible = helper.completion_visible()
+  local completion_visible = config.check_completion_visible and helper.completion_visible()
   if off_y ~= nil and off_y < 0 then -- floating win above first
     if completion_visible then
       show_at = cur_line -- pum, show at current line
@@ -505,7 +505,7 @@ local signature_handler = function(err, result, ctx, config)
     if v_offy < 0 then
       v_offy = 1 -- put virtual text below current line
     end
-    virtual_hint(hint, v_offy)
+    virtual_hint(hint, v_offy, config)
   end
 
   if _LSP_SIG_CFG.floating_window_off_x then
